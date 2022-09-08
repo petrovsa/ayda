@@ -1,35 +1,15 @@
 <template>
   <div class="main">
-    <div class="header">
-      <div class="header__title">Title</div>
-      <dir class="header__cart">
-        <img src="images/cart.png" />
-      </dir>
-    </div>
+    <AydaHeader />
     <div class="catalog">
       <div class="catalog__header">
         <div class="catalog__title">Каталог</div>
         <div class="catalog__sorting">Сортировать по цене</div>
       </div>
       <div class="catalog__sidebar">
-        <ul class="categories">
-          <li class="categories__item">Рюкзаки</li>
-          <li class="categories__item">Футболки</li>
-          <li class="categories__item">Рубашки</li>
-        </ul>
+        <SideMenu :categories="categories" />
         <div class="catalog__products">
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
-          <div class="catalog__products__block"></div>
+          <ProductCard v-for="product in products" :key="product.id" :product="product"/>
         </div>
       </div>
     </div>
@@ -37,16 +17,38 @@
 </template>
 
 <script>
+import AydaHeader from "../components/AydaHeader";
+import SideMenu from "../components/SideMenu";
+import ProductCard from "../components/Products/ProductCard";
 export default {
   name: "IndexPage",
-  data() {
+  asyncData(){
     return {
-      post: {
-        title: "Hello Magazine",
-        description: "It`s Nuxt project",
-      },
-    };
+      categories: [
+        { id: 1, title: "Рюкзаки", product: [
+            {id: 11, 'description': 'Рюкзак Louis Vuitton Discovery', 'price': 150000},
+            {id: 12, 'description': 'Рюкзак Louis Vuitton Discovery', 'price': 150000},
+            {id: 13, 'description': 'Рюкзак Louis Vuitton Discovery', 'price': 150000},
+            {id: 14, 'description': 'Рюкзак Louis Vuitton Discovery', 'price': 150000},
+            {id: 15, 'description': 'Рюкзак Louis Vuitton Discovery', 'price': 150000},
+            {id: 16, 'description': 'Рюкзак Louis Vuitton Discovery', 'price': 150000},
+
+          ] },
+        { id: 2, title: "Футболки" },
+        { id: 3, title: "Рубашки" },
+      ],
+    }
   },
+  components: {
+    ProductCard,
+    AydaHeader,
+    SideMenu,
+  },
+  computed: {
+    products(){
+      return this.categories[0].product;
+    }
+  }
 };
 </script>
 <style lang="scss">
@@ -61,17 +63,7 @@ ul {
   margin: 0 auto;
   width: 1265px;
   padding: 0px 88px;
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid black;
-    &__title {
-      font-weight: 700;
-      font-size: 22px;
-      line-height: 28px;
-    }
-  }
+
   .catalog {
     &__header {
       display: flex;
@@ -90,13 +82,6 @@ ul {
     }
     &__sidebar {
       display: flex;
-      .categories {
-        width: 161px;
-        &__item {
-          padding: 8px 0px;
-          font-size: 16px;
-        }
-      }
     }
     &__products {
       width: 100%;
@@ -104,9 +89,7 @@ ul {
       grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: 272px;
       gap: 16px;
-      &__block {
-        border: 1px solid red;
-      }
+
     }
   }
 }
